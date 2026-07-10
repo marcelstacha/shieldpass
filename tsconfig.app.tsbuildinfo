@@ -1,1 +1,1 @@
-{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts"],"version":"5.6.2"}
+{"root":["./src/main.tsx","./src/vite-env.d.ts","./src/words.tsx","./src/components/accordion.tsx","./src/components/info.tsx","./src/components/layout.tsx","./src/components/qr.tsx","./src/pages/landingpage.tsx","./src/pages/passphrasepage.tsx","./src/pages/passwordpage.tsx"],"version":"5.6.2"}
