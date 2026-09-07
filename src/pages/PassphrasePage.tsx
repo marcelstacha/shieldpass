@@ -1,75 +1,29 @@
 import '../App.css'
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 
 import words from "../words"
 import { InformationCircleIcon, QrCodeIcon } from '@heroicons/react/24/outline';
 import QR from '../components/QR';
 
+const divider: string[] = ["", "-", "+", "%", "=", "x", "_", "#", "*", "$", "@"]
+
 export default function PassphrasePage() {
 
    const [isUpper, setIsUpper] = useState<boolean>(true);
    const [isDivider, setIsDivider] = useState<boolean>(true);
-
    const [password, setPassword] = useState<string>("password")
    const [passwordLength, setPasswordLength] = useState<number>(3)
-   const [fontsize, setFontsize] = useState<number>(64)
-   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
-
    const [isOpenQR, setIsOpenQR] = useState<boolean>(false)
+   const [isCopied, setIsCopied] = useState<boolean>(false);
 
    const desktopText: string[] = ["Großbuchstaben", "Trennzeichen"]
-   const mobileText: string[] = ["ABC", "#+%="]
+   //const mobileText: string[] = ["ABC", "#+%="]
 
-   //let symbols: string[] = words;
-   let pw: string = "";
-   //let symbolsLength: number = 0;
-   let size: number = 0;
-   let buttonsText: string[] = [];
-
-   const divider: string[] = ["", "-", "+", "%", "=", "x", "_", "#", "*", "$", "@"]
-
-   useEffect(() => {
-      generate();
-      //console.log("activeCount: " + activeCount)
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [isUpper, isDivider, passwordLength])
-
-   useEffect(() => {
-      handleGenerate();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [])
-
-   useEffect(() => {
-      const handleResize = () => {
-         setWindowWidth(window.innerWidth);
-      };
-
-      window.addEventListener('resize', handleResize);
-
-      return () => {
-         window.removeEventListener('resize', handleResize);
-      };
-   }, []);
-
-   function generate(): void {
-      pw = getPassword()
-      setPassword(pw)
-      pw = ""
-
-      if (windowWidth < 1100) {
-         size = 220 * (1 / passwordLength)
-      } else {
-         size = 12 * (1 / passwordLength)
-      }
-      setFontsize(size)
-   }
-
-   function getPassword() {
-
+   const generate: () => void = useCallback(() => {
+      let pw: string = ""
       let word: string = ""
       let index: number = 0
-      pw = ""
 
       for (let i = 0; i < passwordLength; i++) {
          const selectedDivider: number = Math.floor(Math.random() * (divider.length - 1)) + 1
@@ -84,14 +38,10 @@ export default function PassphrasePage() {
          }
 
       }
-      return (pw)
-   }
+      setPassword(pw)
+   }, [isDivider, isUpper, passwordLength])
 
-   function handleCopy(): void {
-      navigator.clipboard.writeText(password)
-   }
-
-   function handleGenerate(): void {
+   const handleGenerate: () => void = useCallback(() => {
       let delay: number = 0
 
       for (let i = 0; i < 13; i++) {
@@ -100,13 +50,22 @@ export default function PassphrasePage() {
          }, delay);
          delay += 50;
       }
+   }, [generate])
+
+   function handleCopy(): void {
+      navigator.clipboard.writeText(password)
+      setIsCopied(true)
+      setTimeout(() => setIsCopied(false), 2000)
    }
 
-   if (windowWidth <= 1024) {
-      buttonsText = mobileText
-   } else {
-      buttonsText = desktopText
-   }
+   useEffect(() => {
+      generate();
+   }, [generate])
+
+   useEffect(() => {
+      handleGenerate();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [])
 
    return (<>
       <div className="top subheading-container">
@@ -124,7 +83,6 @@ export default function PassphrasePage() {
       {!isOpenQR && <div className="card-container">
          <div
             className="card big password passphrase"
-            style={{ fontSize: fontsize + "em" }}
          >
             <span>{password} </span>
          </div>
@@ -147,14 +105,14 @@ export default function PassphrasePage() {
 
          < div
             onClick={() => setIsUpper(prev => !prev)}
-            className={`card smallest phrase ${isUpper ? "on" : "off"}`}> {buttonsText[0]}
+            className={`card smallest phrase ${isUpper ? "on" : "off"}`}> {desktopText[0]}
          </div>
          < div
             onClick={() => setIsDivider(prev => !prev)}
-            className={`card smallest phrase ${isDivider ? "on" : "off"}`}> {buttonsText[1]}
+            className={`card smallest phrase ${isDivider ? "on" : "off"}`}> {desktopText[1]}
          </div>
 
-         <div onClick={handleCopy} className="card mid dark copy"> Kopieren </div>
+         <div onClick={handleCopy} className="card mid dark copy"> {isCopied ? "Kopiert" : "Kopieren"} </div>
          <div onClick={handleGenerate} className="card mid dark" > Generieren </div>
       </div>}
    </>)
