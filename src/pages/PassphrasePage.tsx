@@ -103,17 +103,24 @@ export default function PassphrasePage() {
             />
          </div>
 
-         < div
+         <button
             onClick={() => setIsUpper(prev => !prev)}
             className={`card smallest phrase ${isUpper ? "on" : "off"}`}> {desktopText[0]}
-         </div>
-         < div
+         </button>
+         <button
             onClick={() => setIsDivider(prev => !prev)}
             className={`card smallest phrase ${isDivider ? "on" : "off"}`}> {desktopText[1]}
-         </div>
+         </button>
 
-         <div onClick={handleCopy} className="card mid dark copy"> {isCopied ? "Kopiert" : "Kopieren"} </div>
-         <div onClick={handleGenerate} className="card mid dark" > Generieren </div>
+         <button onClick={handleCopy} className="card mid dark copy">
+            <span
+               key={isCopied ? "copied" : "copy"}
+               className="text-animate"
+            >
+               {isCopied ? "Kopiert" : "Kopieren"}
+            </span>
+         </button>
+         <button onClick={handleGenerate} className="card mid dark" > Generieren </button>
       </div>}
    </>)
 }
