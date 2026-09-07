@@ -28,7 +28,7 @@ export default function Layout() {
       </nav>
 
       <header className="heading">
-         <img className="shield" src="shield.svg"></img>
+         <img className="shield" src="shield.svg" alt="Shield Logo" ></img>
          <h1>Shieldpass 3.0 </h1>
       </header>
 

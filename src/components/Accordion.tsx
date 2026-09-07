@@ -18,8 +18,10 @@ export default function Accordion({ title, children }: { title: string | ReactNo
          transition={{ duration: 0.25, ease: "easeInOut" }}
          className="accordion"
          onClick={handleClick}
+         aria-expanded={isOpen}
       >
          <h5>{title}</h5>
+
          <div className="chevron">
             {isOpen ?
                <ChevronUpIcon width="1.5rem" /> :
@@ -28,6 +30,7 @@ export default function Accordion({ title, children }: { title: string | ReactNo
          </div>
          <AnimatePresence>
             {isOpen &&
+
                <motion.div
                   layout
                   initial={{ opacity: 0 }}
@@ -36,6 +39,7 @@ export default function Accordion({ title, children }: { title: string | ReactNo
                   transition={{ duration: 0.15, ease: "easeInOut" }}
                   className="info-paragraph"
                >
+                  <hr />
                   {children}
                </motion.div>
             }

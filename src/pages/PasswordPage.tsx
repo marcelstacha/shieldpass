@@ -1,12 +1,23 @@
 import '../App.css'
 
-import { InformationCircleIcon, QrCodeIcon, LockClosedIcon, StopIcon } from "@heroicons/react/24/outline";
+import { InformationCircleIcon, QrCodeIcon } from "@heroicons/react/24/outline";
 
-import { useState, useEffect } from "react"
-import { JSX } from 'react/jsx-runtime';
+import { useState, useEffect, useCallback } from "react"
 
 import Info from '../components/Info';
 import QR from '../components/QR';
+import Lock from '../components/Lock';
+import InputRange from '../components/InputRange';
+import CopyGenerateButtons from '../components/CopyGenerateButtons';
+import ToggleButton from '../components/ToggleButton';
+
+const lower: string[] = ["abcdefghijklmnopqrstuvwxyz", "abcdefghjkmnpqrtuvwxyz"]
+const upper: string[] = [lower[0].toUpperCase(), lower[1].toUpperCase().concat("L")]
+const numbers: string[] = ["0123456789", "2346789"]
+const special: string[] = ["@#&*=^_~", "#&*=^_~"]
+
+const desktopText: string[] = ["Kleinbuchstaben", "Großbuchstaben", "Zahlen", "Sonderzeichen", "Lookalike"]
+const mobileText: string[] = ["abc", "ABC", "123", "?#%", "oO0"]
 
 export default function PasswordPage() {
 
@@ -21,94 +32,40 @@ export default function PasswordPage() {
 
    const [password, setPassword] = useState<string>("password")
    const [passwordLength, setPasswordLength] = useState<number>(16)
-   const [symbolsLength, setSymbolsLength] = useState<number>(0)
-   const [fontsize, setFontsize] = useState<number>(64)
-   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+   const [symbolsLength, setSymbolsLength] = useState<number>(70)
 
-   const lower: string[] = ["abcdefghijklmnopqrstuvwxyz", "abcdefghjkmnpqrtuvwxyz"]
-   const upper: string[] = [lower[0].toUpperCase(), lower[1].toUpperCase().concat("L")]
-   const numbers: string[] = ["0123456789", "2346789"]
-   const special: string[] = ["@#&*=^_~", "#&*=^_~"]
 
-   const desktopText: string[] = ["Kleinbuchstaben", "Großbuchstaben", "Zahlen", "Sonderzeichen", "Lookalike"]
-   const mobileText: string[] = ["abc", "ABC", "123", "?#%", "oO0"]
-
-   const lockOutput: JSX.Element[] = []
    const activeCount: number = Number(isLower) + Number(isUpper) + Number(isNumber) + Number(isSpecial)
+   const [isCopied, setIsCopied] = useState<boolean>(false);
 
    const MAX_LENGTH = 48
 
-   let symbols: string = "";
-   let pw: string = "";
-   let size: number = 0;
-   let buttonsText: string[] = [];
+   function calculateEntropy() {
+
+      let entropyRating = 0
+
+      const entropy = passwordLength * Math.log(symbolsLength) / Math.log(2);
+
+      if (entropy < 40) {
+         entropyRating = 0
+      } else if (entropy >= 40 && entropy < 72) {
+         entropyRating = 1
+      } else if (entropy >= 72 && entropy < 128) {
+         entropyRating = 2
+      } else if (entropy >= 128 && entropy < 192) {
+         entropyRating = 3
+      } else if (entropy >= 192 && entropy < 256) {
+         entropyRating = 4
+      } else if (entropy >= 256) {
+         entropyRating = 5
+      }
+      return entropyRating
+   }
 
    const entropy = calculateEntropy()
-   let entropyRating = 0
 
-   if (entropy < 40) {
-      entropyRating = 0
-   } else if (entropy >= 40 && entropy < 72) {
-      entropyRating = 1
-   } else if (entropy >= 72 && entropy < 128) {
-      entropyRating = 2
-   } else if (entropy >= 128 && entropy < 192) {
-      entropyRating = 3
-   } else if (entropy >= 192 && entropy < 256) {
-      entropyRating = 4
-   } else if (entropy >= 256) {
-      entropyRating = 5
-   }
-
-   useEffect(() => {
-      generate();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [isLower, isUpper, isNumber, isSpecial, isLookalike, passwordLength])
-
-   useEffect(() => {
-      handleGenerate();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [])
-
-   useEffect(() => {
-      const handleResize = () => {
-         setWindowWidth(window.innerWidth);
-      };
-      window.addEventListener('resize', handleResize);
-
-      return () => {
-         window.removeEventListener('resize', handleResize);
-      };
-   }, []);
-
-   function getLockIcons() {
-      let fill
-      switch (entropyRating) {
-         case 1: fill = "#ff3b3b"
-            break
-         case 5: fill = "var(--on)"
-            break
-         default: fill = "var(--font)"
-            break
-      }
-      for (let i = 0; i < entropyRating; i++) {
-         lockOutput.push(<LockClosedIcon key={i} width="1rem" strokeWidth="2.5px" stroke={fill} />)
-      }
-      const openIconCount = 5 - entropyRating
-      if (openIconCount == 0) return lockOutput
-
-      for (let i = 0; i < openIconCount; i++) {
-         lockOutput.push(<StopIcon key={i + 5} width="1rem" strokeWidth="2.5px" stroke={entropyRating == 0 ? "#ff3b3b" : "#666"} />)
-      }
-      return lockOutput
-   }
-
-   function calculateEntropy() {
-      return passwordLength * Math.log(symbolsLength) / Math.log(2);
-   }
-
-   function generate(): void {
-      symbols = "";
+   const generate: () => void = useCallback(() => {
+      let symbols = "";
       let calculatedSymbolsLength = 0
 
       if (isLower) {
@@ -128,38 +85,26 @@ export default function PasswordPage() {
          calculatedSymbolsLength += special[Number(!isLookalike)].length
       }
 
+
       setSymbolsLength(calculatedSymbolsLength)
 
       if (isLower || isUpper || isNumber || isSpecial) {
-         pw = getPassword(symbols, calculatedSymbolsLength)
-         setPassword(pw);
-         symbols = "";
-         pw = "";
+         let generatedPassword = ""
 
-         if (windowWidth <= 1680) {
-            size = 100 * (1 / passwordLength);
-         } else {
-            size = 128 * (1 / passwordLength);
+         for (let i = 0; i < passwordLength; i++) {
+            const index = Math.floor(Math.random() * calculatedSymbolsLength)
+            generatedPassword += symbols.charAt(index)
          }
-         setFontsize(size);
-      }
-   }
 
-   function getPassword(symbols: string, symbolsLength: number) {
-      let symbol: string = ""
-      let index: number = 0
-      pw = ""
-
-      for (let i = 0; i < passwordLength; i++) {
-         index = Math.floor(Math.random() * symbolsLength)
-         symbol = symbols.charAt(index);
-         pw += symbol
+         setPassword(generatedPassword);
+         symbols = "";
       }
-      return (pw)
-   }
+   }, [isLookalike, isLower, isNumber, isSpecial, isUpper, passwordLength])
 
    function handleCopy(): void {
       navigator.clipboard.writeText(password)
+      setIsCopied(true)
+      setTimeout(() => setIsCopied(false), 2000)
    }
 
    function handleGenerate(): void {
@@ -183,11 +128,14 @@ export default function PasswordPage() {
       setIsOpenInfo((prev) => !prev)
    }
 
-   if (windowWidth <= 1024) {
-      buttonsText = mobileText
-   } else {
-      buttonsText = desktopText
-   }
+   useEffect(() => {
+      generate();
+   }, [isLower, isUpper, isNumber, isSpecial, isLookalike, passwordLength, generate])
+
+   useEffect(() => {
+      handleGenerate();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [])
 
    return (<>
       <div className="top subheading-container">
@@ -205,10 +153,7 @@ export default function PasswordPage() {
       {isOpenQR && <QR password={password} onClick={handleQR} />}
       {!isOpenInfo && !isOpenQR &&
          <div className="card-container">
-            <div
-               className="card big password"
-               style={{ fontSize: fontsize + "em" }}
-            >
+            <div className="card big password">
                <span>{password}</span>
             </div>
 
@@ -219,47 +164,53 @@ export default function PasswordPage() {
                <span className="length">{passwordLength}</span>
             </div>
             <div className="entropy-container info dark">
-               {getLockIcons()}
+               <Lock isFilled={true} size={entropy} />
             </div>
 
-            <div className="big input dark">
-               <input type="range"
-                  min="8"
-                  max={MAX_LENGTH}
-                  step="2"
-                  onChange={
-                     (e) => {
-                        setPasswordLength(parseInt(e.target.value, 10));
-                        generate();
-                     }
-                  }
-                  value={passwordLength}
-               />
-            </div>
+            <InputRange
+               passwordLength={passwordLength}
+               setPasswordLength={setPasswordLength}
+               min={8}
+               max={MAX_LENGTH}
+               step={2}
+            />
 
-            <div
-               onClick={activeCount == 1 ? () => setIsLower(true) : () => setIsLower(prev => !prev)}
-               className={`card smallest ${isLower ? "on" : "off"}`}>{buttonsText[0]}
-            </div>
-            <div
-               onClick={activeCount == 1 ? () => setIsUpper(true) : () => setIsUpper(prev => !prev)}
-               className={`card smallest ${isUpper ? "on" : "off"}`}>{buttonsText[1]}
-            </div>
-            <div
-               onClick={activeCount == 1 ? () => setIsNumber(true) : () => setIsNumber(prev => !prev)}
-               className={`card smallest ${isNumber ? "on" : "off"}`}>{buttonsText[2]}
-            </div>
-            <div
-               onClick={activeCount == 1 ? () => setIsSpecial(true) : () => setIsSpecial(prev => !prev)}
-               className={`card smallest ${isSpecial ? "on" : "off"}`}>{buttonsText[3]}
-            </div>
-            <div
-               onClick={() => setIsLookalike(prev => !prev)}
-               className={`card smallest ${isLookalike ? "on" : "off"}`}>{buttonsText[4]}
-            </div>
+            <ToggleButton
+               onClickHandler={activeCount == 1 ? () => setIsLower(true) : () => setIsLower((prev) => !prev)}
+               state={isLower}
+               textMobile={mobileText[0]}
+               textDesktop={desktopText[0]}
+            />
+            <ToggleButton
+               onClickHandler={activeCount == 1 ? () => setIsUpper(true) : () => setIsUpper((prev) => !prev)}
+               state={isUpper}
+               textMobile={mobileText[1]}
+               textDesktop={desktopText[1]}
+            />
+            <ToggleButton
+               onClickHandler={activeCount == 1 ? () => setIsNumber(true) : () => setIsNumber((prev) => !prev)}
+               state={isNumber}
+               textMobile={mobileText[2]}
+               textDesktop={desktopText[2]}
+            />
+            <ToggleButton
+               onClickHandler={activeCount == 1 ? () => setIsSpecial(true) : () => setIsSpecial((prev) => !prev)}
+               state={isSpecial}
+               textMobile={mobileText[3]}
+               textDesktop={desktopText[3]}
+            />
+            <ToggleButton
+               onClickHandler={() => setIsLookalike((prev) => !prev)}
+               state={isLookalike}
+               textMobile={mobileText[4]}
+               textDesktop={desktopText[4]}
+            />
 
-            <div onClick={handleCopy} className="card mid dark">Kopieren</div>
-            <div onClick={handleGenerate} className="card mid dark">Generieren</div>
+            <CopyGenerateButtons
+               handleCopy={handleCopy}
+               handleGenerate={handleGenerate}
+               isCopied={isCopied}
+            />
          </div>}
    </>)
 }

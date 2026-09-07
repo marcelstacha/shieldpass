@@ -5,11 +5,14 @@ import { QRCodeSVG } from "qrcode.react";
 export default function QR({ password, onClick }: { password: string; onClick: () => void }) {
 
    return (<>
+
       <div
          className="popup"
       >
          <div className="x-container subheading-container">
-            <div className="x"><XMarkIcon width="2rem" onClick={onClick} /></div>
+            <div className="x">
+               <XMarkIcon width="2rem" onClick={onClick} />
+            </div>
          </div>
          <motion.div
             layout

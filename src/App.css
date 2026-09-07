@@ -5,7 +5,10 @@
    --font:#f0f0f0;
    --dark:#0f0f0f;
    --dark2:#222;
-   
+   --darktransparent:rgba(255,255,255,0.03);
+
+   --red:rgb(255, 55, 0);
+
    color-scheme: light dark;
    color: var(--font);
    max-width: 1400px;
@@ -44,12 +47,12 @@ button{
    font-family: Archivo, sans-serif;
 }
 
-.text-animate {
+.text-animate{
   display: inline-block;
   animation: slideFade 0.3s ease-out forwards;
 }
 
-@keyframes slideFade {
+@keyframes slideFade{
   0% {
     opacity: 0;
     transform: translateY(-5px);
@@ -60,12 +63,23 @@ button{
   }
 }
 
-.green{
+  .sr-only {
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+  } 
+
+.green-text{
    color:var(--on)
 }
 
 .wrapper,.popup{
-   background-color: rgba(255,255,255,0.03);
+   background-color: var(--darktransparent);
    padding:1rem;
 }
 
@@ -169,7 +183,7 @@ button{
 }
 
 .active:hover a{
-   color:#b1ff51 !important;
+   color:var(--on-light) !important;
 }
 
 a {
@@ -185,8 +199,7 @@ a:hover{
 }
 
 li{
-   border-radius: 999px;
-   padding:1rem 2rem;
+padding:0.25rem 0.5rem;
 }
 
 hr{
@@ -200,7 +213,7 @@ hr{
    flex-direction: row;
    justify-content: center;
    align-items: baseline;
-   padding-top:2rem;
+   padding: 2rem 0;
    gap:0.25rem;
    align-items: center;
 }
@@ -220,6 +233,7 @@ hr{
    word-wrap: break-word;
    overflow-wrap: break-word;
    height:20rem;
+   font-size: 5.7em;
 }
 
 .transparent{
@@ -257,21 +271,102 @@ h5{
    font-size:1.3rem;
 }
 
-main {
-   margin-top: 2em;
-}
 
 input[type="range" i] {
    margin: 0 18px;
 }
 
+input {
+   cursor: pointer;
+}
+
+
+/* 1. Standard-Design zurücksetzen */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: auto;
+  background: transparent;
+}
+.slider:focus {
+  outline: none;
+}
+
+/* 2. Die Bahn (Track) stylen */
+.slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  background: rgb(68, 68, 68);
+  border-radius: 3px;
+}
+.slider::-moz-range-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  background: rgb(68, 68, 68);
+  border-radius: 3px;
+}
+
+/* 3. Den Regler-Knopf (Thumb) stylen */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  margin-top: -7px;
+box-shadow: 0 0px 16px rgba(0,0,0,0.75);
+
+}
+.slider::-moz-range-thumb {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  margin:auto;
+    background: white;
+  cursor: pointer;
+  border: none;
+  margin-top: -7px;
+  box-shadow: 0 0px 16px rgba(0,0,0,0.75);
+}
+
+/* Optional: Hover-Effekt für den Knopf */
+.slider::-webkit-slider-thumb:hover {
+  background: #357ABD;
+}
+.slider::-moz-range-thumb:hover {
+  background: #357ABD;
+}
+
+
+
+
+.lock-info-container{
+   justify-content: center;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   width:100%;
+}
+
+.lock-info-row{
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   width:13.5rem;
+}
+
+.lock-info-icon{
+    display: flex;
+   gap:0.125rem;
+}
+
+
 footer {
    font-size: 1.15em;
    color: #b8b8b8;
-}
-
-input {
-   cursor: pointer;
 }
 
 .password span {
@@ -313,8 +408,8 @@ input {
 .navbar ul {
    width:100%;
    display: flex;
-   justify-content: space-evenly;
-   gap: 32px;
+   justify-content: center;
+   gap: 40px;
    padding:0;
 }
 
@@ -379,7 +474,7 @@ input {
 
 .info-paragraph{
    margin-top:0.5rem;
-   line-height: 1.3;
+   line-height: 1.6;
    font-size:1.2rem;
 }
 
@@ -457,7 +552,7 @@ h2{
 }
 
 .x svg{
-   stroke: #ff4400;
+   stroke: var(--red);
    stroke-width: 3px;
    width:1.5rem;
 }
@@ -508,7 +603,7 @@ h2{
       word-wrap: break-word;
       overflow-wrap: break-word;
       white-space: pre-wrap;
-      font-size: 4.8em !important;
+      font-size: 4.5rem !important;
       padding: 0 2rem;
    }
 
@@ -544,7 +639,8 @@ h2{
 }
 
 @media (max-width:1330px) {
-   
+
+
    :root, body {
       font-size: 0.9em;
    }
@@ -569,7 +665,7 @@ h2{
       word-wrap: break-word;
       overflow-wrap: break-word;
       white-space: pre-wrap;
-      font-size: 3em !important;
+      font-size: 4.3em !important;
       padding: 0 4rem;
    }
 
@@ -594,13 +690,48 @@ h2{
    .input {
       height: 50px;
    }
+
 }
+
+@media (min-width:1025px){
+
+
+   .mobile{
+      display:none;
+   }
+
+   .desktop{
+      display:block;
+   }
+
+   .smallest {
+      font-size: 1.65em;
+   }
+
+   .navbar ul{
+      margin-top:2rem ;
+   }
+
+}
+
 
 @media (max-width:1024px) {
 
-.top{
-   padding:0 0 0.5rem 0;
-}
+   .lock-info-row {
+      width: 13rem;
+   }
+
+   .mobile{
+      display:block;
+   }
+   .desktop{
+      display:none;
+   }
+
+   .top{
+      padding:0 0 0.5rem 0;
+   }
+   
    .off:hover{
       background-color: var(--dark2);
       color:var(--font);
@@ -639,7 +770,7 @@ h2{
 
    .password {
       white-space: wrap;
-      font-size: 1.9em !important;
+      font-size: 2.9em !important;
       padding: 0 1.5rem;
    }
 
@@ -676,9 +807,8 @@ h2{
    }
 
    .heading {
-      padding-top:0;
       font-size: 4em;
-      margin:2rem 0;
+    
    }
 
    .landing-card{
@@ -698,6 +828,10 @@ h2{
 
 @media (max-width:768px) {
 
+   .lock-info-row {
+      width: 12rem;
+   }
+
    h1 {
       opacity: 1;
    }
@@ -706,10 +840,6 @@ h2{
       opacity: 1;
    }
 
-   main {
-      margin-top: 2em;
-   }
-   
    footer {
       font-size: 0.95em;
       margin-top: 32px;
@@ -723,9 +853,6 @@ h2{
       padding: 0;
    }
 
-   ul{
-      padding: 1rem 0 !important;
-   }
    
    h1 {
       font-size: 0.7em;
@@ -755,7 +882,7 @@ h2{
 
    .password {
       white-space: wrap;
-      font-size: 1.5em !important;
+      font-size: 2.1em !important;
       padding: 0 1rem;
    }
 
@@ -805,14 +932,17 @@ h2{
       font-size:11pt;
    }
 
-
-
    .wrapper{
       border-radius:14px;
    }
 }
 
+
 @media (max-width:425px) {
+
+   .lock-info-row {
+      width: 11.5rem;
+   }
    
    :root {
       padding: 0 0.5rem !important;
@@ -822,25 +952,18 @@ h2{
       padding:0.5rem;
    }
    
-   main {
-      margin-top: 0;
-   }
-   
    footer {
       font-size: 0.75em;
       margin-top: 32px;
    }
 
-   h1 {
-      font-size: 0.5em;
-   }
 
    h5{
       font-size:1rem;
    }
 
-   .heading{
-      margin:1.25rem 0 2rem 0;
+   .heading h1{
+      font-size: 0.58em;
    }
 
    .shield{
@@ -851,19 +974,14 @@ h2{
       gap: 0.5rem;
    }
 
-   .smallest {
-      border-radius: 10px;
-      font-size: 1em;
-   }
-
-   .mid {
+   .smallest,.mid {
       border-radius: 8px;
-      font-size: 1em;
+      font-size: 1.15em;
    }
 
    .password {
       white-space: wrap;
-      font-size: 1.85em !important;
+      font-size: 2em !important;
       padding: 0 1rem;
    }
 

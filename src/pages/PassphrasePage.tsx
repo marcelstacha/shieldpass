@@ -5,8 +5,13 @@ import { useState, useEffect, useCallback } from "react"
 import words from "../words"
 import { InformationCircleIcon, QrCodeIcon } from '@heroicons/react/24/outline';
 import QR from '../components/QR';
+import ToggleButton from '../components/ToggleButton';
+import CopyGenerateButtons from '../components/CopyGenerateButtons';
+import InputRange from '../components/InputRange';
 
 const divider: string[] = ["", "-", "+", "%", "=", "x", "_", "#", "*", "$", "@"]
+const desktopText: string[] = ["Großbuchstaben", "Trennzeichen"]
+const mobileText: string[] = ["ABC", "#+%="]
 
 export default function PassphrasePage() {
 
@@ -16,9 +21,6 @@ export default function PassphrasePage() {
    const [passwordLength, setPasswordLength] = useState<number>(3)
    const [isOpenQR, setIsOpenQR] = useState<boolean>(false)
    const [isCopied, setIsCopied] = useState<boolean>(false);
-
-   const desktopText: string[] = ["Großbuchstaben", "Trennzeichen"]
-   //const mobileText: string[] = ["ABC", "#+%="]
 
    const generate: () => void = useCallback(() => {
       let pw: string = ""
@@ -89,38 +91,36 @@ export default function PassphrasePage() {
          <div className="length-container info full">
             <span className="length">{passwordLength}</span>
          </div>
-         < div className="card big input dark" >
-            <input type="range"
-               min="3"
-               max="9"
-               step="1"
-               onChange={(e) => {
-                  setPasswordLength(parseInt(e.target.value, 10));
-                  generate();
-               }
-               }
-               value={passwordLength}
-            />
-         </div>
 
-         <button
-            onClick={() => setIsUpper(prev => !prev)}
-            className={`card smallest phrase ${isUpper ? "on" : "off"}`}> {desktopText[0]}
-         </button>
-         <button
-            onClick={() => setIsDivider(prev => !prev)}
-            className={`card smallest phrase ${isDivider ? "on" : "off"}`}> {desktopText[1]}
-         </button>
+         <InputRange
+            passwordLength={passwordLength}
+            setPasswordLength={setPasswordLength}
+            min={3}
+            max={9}
+            step={1}
+         />
 
-         <button onClick={handleCopy} className="card mid dark copy">
-            <span
-               key={isCopied ? "copied" : "copy"}
-               className={`text-animate ${isCopied ? "green" : ""}`}
-            >
-               {isCopied ? "Kopiert" : "Kopieren"}
-            </span>
-         </button>
-         <button onClick={handleGenerate} className="text-animate card mid dark" > Generieren </button>
+         <ToggleButton
+            onClickHandler={() => setIsUpper((prev) => !prev)}
+            state={isUpper}
+            textMobile={mobileText[0]}
+            textDesktop={desktopText[0]}
+            isPhrase={true}
+         />
+
+         <ToggleButton
+            onClickHandler={() => setIsDivider((prev) => !prev)}
+            state={isDivider}
+            textMobile={mobileText[1]}
+            textDesktop={desktopText[1]}
+            isPhrase={true}
+         />
+
+         <CopyGenerateButtons
+            handleCopy={handleCopy}
+            handleGenerate={handleGenerate}
+            isCopied={isCopied}
+         />
       </div>}
    </>)
 }
