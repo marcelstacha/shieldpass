@@ -115,12 +115,12 @@ export default function PassphrasePage() {
          <button onClick={handleCopy} className="card mid dark copy">
             <span
                key={isCopied ? "copied" : "copy"}
-               className="text-animate"
+               className={`text-animate ${isCopied ? "green" : ""}`}
             >
                {isCopied ? "Kopiert" : "Kopieren"}
             </span>
          </button>
-         <button onClick={handleGenerate} className="card mid dark" > Generieren </button>
+         <button onClick={handleGenerate} className="text-animate card mid dark" > Generieren </button>
       </div>}
    </>)
 }

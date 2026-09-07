@@ -52,12 +52,16 @@ button{
 @keyframes slideFade {
   0% {
     opacity: 0;
-    transform: translateY(-5px); /* Startet leicht nach oben verschoben */
+    transform: translateY(-5px);
   }
   100% {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.green{
+   color:var(--on)
 }
 
 .wrapper,.popup{
