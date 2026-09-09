@@ -1,7 +1,6 @@
 import '../App.css'
 
 import { InformationCircleIcon, QrCodeIcon } from "@heroicons/react/24/outline";
-
 import { useState, useEffect, useCallback } from "react"
 
 import Info from '../components/Info';
@@ -10,7 +9,6 @@ import Lock from '../components/Lock';
 import InputRange from '../components/InputRange';
 import CopyGenerateButtons from '../components/CopyGenerateButtons';
 import ToggleButton from '../components/ToggleButton';
-import { span } from 'motion/react-client';
 
 const lower: string[] = ["abcdefghijklmnopqrstuvwxyz", "abcdefghjkmnpqrtuvwxyz"]
 const upper: string[] = [lower[0].toUpperCase(), lower[1].toUpperCase().concat("L")]
