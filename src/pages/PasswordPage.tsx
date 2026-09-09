@@ -33,7 +33,6 @@ export default function PasswordPage() {
    const [passwordLength, setPasswordLength] = useState<number>(16)
    const [symbolsLength, setSymbolsLength] = useState<number>(70)
 
-
    const activeCount: number = Number(isLower) + Number(isUpper) + Number(isNumber) + Number(isSpecial)
    const [isCopied, setIsCopied] = useState<boolean>(false);
 
@@ -83,7 +82,6 @@ export default function PasswordPage() {
          symbols += special[Number(!isLookalike)]
          calculatedSymbolsLength += special[Number(!isLookalike)].length
       }
-
 
       setSymbolsLength(calculatedSymbolsLength)
 
