@@ -6,7 +6,7 @@ import Lock from "./Lock";
 export default function Info({ onClick }: { onClick: () => void }) {
 
    return (<>
-      <div className="popup">
+      <div className="popup info-container">
          <div className="subheading-container">
             <h2>Informationen zur Nutzung</h2>
             <div className="x" >

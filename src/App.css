@@ -1,11 +1,13 @@
 :root {
    --on:#8cff00;
-   --on-light:#b1ff51;
+   --on-light:#6ec800;
    --off-light:rgb(48, 48, 48);
    --font:#f0f0f0;
    --dark:#0f0f0f;
-   --dark2:#222;
-   --darktransparent:rgba(255,255,255,0.03);
+   --dark2:#232323;
+   --darktransparent:rgb(20, 20, 20);
+   --gray:#2b2b2b;
+   --gray-light:rgb(58, 58, 58);
 
    --red:rgb(255, 55, 0);
 
@@ -38,7 +40,7 @@ body {
    color: var(--font);
    margin: 0;
    height: 100%;
-   background: linear-gradient(25deg, black, #1b1b1b);
+   background: linear-gradient(0deg, rgb(3, 3, 3), #121212);
    background-attachment: fixed;
 }
 
@@ -73,6 +75,8 @@ button{
     padding: 0;
     position: absolute;
   } 
+
+
 
 .green-text{
    color:var(--on)
@@ -111,11 +115,11 @@ button{
 
 .card {
    color: var(--dark2);
-   border-radius: 28px;
+   border-radius: 18px;
    text-align: center;
    align-content: center;
    box-sizing: border-box;
-   transition: background 0.5s;
+   transition: background 0.3s;
 }
 
 .slim {
@@ -127,6 +131,10 @@ button{
    height: 130px;
    font-size: 18pt;
    cursor: pointer;
+   border: rgb(140 255 0 / 50%) 1px solid;
+   border-top-width: 0;
+   border-left-width: 0;
+   border-right-width: 0;
 }
 
 .phrase {
@@ -146,19 +154,15 @@ button{
    grid-column: span 5;
    height: 240px;
    font-size: 36pt;
-   transition: all 0.5s;
    cursor: pointer;
 }
 
 .mid:hover {
-   background-color: var(--off-light);
-   transition: all 0.5s;
+   background-color: var(--gray-light);
 }
 
 .mid:focus {
-   background-color: black;
    color: var(--font);
-   transition: all 0.5s;
 }
 
 .big {
@@ -172,10 +176,14 @@ button{
 
 .input {
    display: flex;
-   height: 50px;
-   flex-direction: column;
+   height: 60px;
+   width:100%;
+   flex-direction: row;
+   align-items: center;
    justify-content: center;
    border-radius:999px !important;
+   border: solid 2px var(--gray-light);
+   box-sizing: border-box;
 }
 
 .active{
@@ -205,6 +213,12 @@ padding:0.25rem 0.5rem;
 hr{
    margin:1rem 0;
    padding:0;
+   border-color:var(--dark2);
+}
+
+.info-title{
+   display:flex;
+   gap:8px;
 }
 
 .heading {
@@ -271,21 +285,19 @@ h5{
    font-size:1.3rem;
 }
 
-
-input[type="range" i] {
-   margin: 0 18px;
-}
-
 input {
    cursor: pointer;
 }
 
+.desktop-text{
+   visibility: visible;
+}
 
 /* 1. Standard-Design zurücksetzen */
 .slider {
   -webkit-appearance: none;
   appearance: none;
-  width: auto;
+  width: 100%;
   background: transparent;
 }
 .slider:focus {
@@ -297,14 +309,14 @@ input {
   width: 100%;
   height: 6px;
   cursor: pointer;
-  background: rgb(68, 68, 68);
+  background: var(--gray-light);
   border-radius: 3px;
 }
 .slider::-moz-range-track {
   width: 100%;
   height: 6px;
   cursor: pointer;
-  background: rgb(68, 68, 68);
+  background: var(--gray-light);
   border-radius: 3px;
 }
 
@@ -321,26 +333,32 @@ box-shadow: 0 0px 16px rgba(0,0,0,0.75);
 
 }
 .slider::-moz-range-thumb {
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-  margin:auto;
-    background: white;
-  cursor: pointer;
-  border: none;
-  margin-top: -7px;
-  box-shadow: 0 0px 16px rgba(0,0,0,0.75);
+   height: 16px;
+   width: 16px;
+   border-radius: 50%;
+   margin:auto;
+   background: white;
+   cursor: pointer;
+   border: none;
+   margin-top: -7px;
+   box-shadow: 0 0px 16px rgba(0,0,0,0.75);
 }
 
 /* Optional: Hover-Effekt für den Knopf */
 .slider::-webkit-slider-thumb:hover {
-  background: #357ABD;
+  background: var(--on)
 }
 .slider::-moz-range-thumb:hover {
-  background: #357ABD;
+  background: var(--on)
 }
 
+   .input-minmax{
+  padding:0 32px
+}
 
+.info-container{
+   max-width: 800px;
+}
 
 
 .lock-info-container{
@@ -397,11 +415,11 @@ footer {
 }
 
 .off:hover {
-   background-color: var(--off-light);
+   background-color: var(--gray-light);
 }
 
 .card.mid:active {
-   background-color: black;
+   background-color: var(--gray-light);
    color: var(--font);
 }
 
@@ -449,7 +467,7 @@ footer {
 
 .info{
    justify-content: center;
-   padding:1rem 0;
+height:60px;
    border-radius: 999px;
    font-size:1.8rem;
    display:flex;
@@ -480,14 +498,16 @@ footer {
 
 .calc-container,.entropy-container{
    grid-column: span 4;
-   border:transparent solid 1px;
+   background-color: var(--gray-light);
+   box-sizing: border-box;
 }
 
 .length-container {
    grid-column: span 2;
    background-color: var(--dark);
    color: var(--font);
-   border: #909090 solid 1px;
+   border: #909090 solid 2px;
+   box-sizing: border-box;
 }
 
 .entropy-container svg{
@@ -528,9 +548,8 @@ h2{
 
 .popup{
    position: relative;
-   max-width: 900px;
    margin:auto;
-   background:var(--dark);
+   background:var(--dark2);
    border-radius:28px;
    box-sizing: border-box;
    width:auto;
@@ -543,7 +562,7 @@ h2{
 }
 
 .qr{
-   padding:2rem 0;
+   padding:0 0 2rem 0;
 }
 
 .x{
@@ -561,10 +580,12 @@ h2{
    position: relative;
    cursor: pointer;
    background-color: var(--dark2);
-   border:1px solid var(--font);
+   border:2px solid var(--gray-light);
    border-radius:12px;
    padding:1rem;
 }
+
+
 
 .chevron{
    position:absolute;
@@ -573,6 +594,10 @@ h2{
 }
 
 @media (max-width:1700px) {
+
+   .input-minmax{
+  padding:0 32px
+}
 
    :root,
    body {
@@ -616,7 +641,7 @@ h2{
    }
 
    .card,.popup {
-      border-radius: 16px;
+      border-radius: 11px;
    }
 
    .smallest {
@@ -633,13 +658,16 @@ h2{
       height: 13rem;
    }
 
-   .input {
-      height: 50px;
+   .input,.info {
+      height: 60px;
    }
 }
 
 @media (max-width:1330px) {
 
+      .input-minmax{
+  padding:0 32px
+}
 
    :root, body {
       font-size: 0.9em;
@@ -695,7 +723,6 @@ h2{
 
 @media (min-width:1025px){
 
-
    .mobile{
       display:none;
    }
@@ -712,10 +739,22 @@ h2{
       margin-top:2rem ;
    }
 
+    .input-minmax{
+      font-size:1.3rem;
+    }
+
 }
 
 
 @media (max-width:1024px) {
+
+.desktop-text{
+   display:none;
+}
+
+      .input-minmax{
+  padding:0 24px
+}
 
    .lock-info-row {
       width: 13rem;
@@ -828,6 +867,10 @@ h2{
 
 @media (max-width:768px) {
 
+   .input-minmax{
+  padding:0 20px
+}
+
    .lock-info-row {
       width: 12rem;
    }
@@ -890,8 +933,8 @@ h2{
       font-size:1.2rem !important;
    }
 
-   .input {
-      height: 3rem !important;
+   .input,.info {
+      height: 50px !important;
    }
 
    .info{
@@ -939,6 +982,10 @@ h2{
 
 
 @media (max-width:425px) {
+
+   .input-minmax{
+  padding:0 20px
+}
 
    .lock-info-row {
       width: 11.5rem;
@@ -989,8 +1036,8 @@ h2{
       font-size:1.1rem !important;
    }
 
-   .input {
-      height: 2rem !important;
+   .input,.info {
+      height: 50px !important;
    }
 
    .navbar {
@@ -1009,20 +1056,14 @@ h2{
 
    .calc-container{
       border-radius: 10px;
-      border-top-left-radius: 16px;
-      border-bottom-left-radius: 16px;
-      height:50px;
    }
 
    .length-container{
-      height:50px;
       border-radius:10px;
    }
 
    .entropy-container{
       border-radius: 10px;
-      border-top-right-radius: 16px;
-      border-bottom-right-radius: 16px;
    }
    
    .entropy-container svg{

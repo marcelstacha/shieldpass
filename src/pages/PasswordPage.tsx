@@ -10,6 +10,7 @@ import Lock from '../components/Lock';
 import InputRange from '../components/InputRange';
 import CopyGenerateButtons from '../components/CopyGenerateButtons';
 import ToggleButton from '../components/ToggleButton';
+import { span } from 'motion/react-client';
 
 const lower: string[] = ["abcdefghijklmnopqrstuvwxyz", "abcdefghjkmnpqrtuvwxyz"]
 const upper: string[] = [lower[0].toUpperCase(), lower[1].toUpperCase().concat("L")]
@@ -158,7 +159,7 @@ export default function PasswordPage() {
             </div>
 
             <div className="calc-container info dark">
-               <span>{symbolsLength} Zeichen</span>
+               <span>{symbolsLength} <span className="desktop-text">mögliche</span> Zeichen</span>
             </div>
             <div className="length-container info">
                <span className="length">{passwordLength}</span>

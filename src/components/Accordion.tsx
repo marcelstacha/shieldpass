@@ -20,7 +20,7 @@ export default function Accordion({ title, children }: { title: string | ReactNo
          onClick={handleClick}
          aria-expanded={isOpen}
       >
-         <h5>{title}</h5>
+         <h5 className="info-title">{title}</h5>
 
          <div className="chevron">
             {isOpen ?

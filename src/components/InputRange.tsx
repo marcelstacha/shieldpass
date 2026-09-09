@@ -2,6 +2,7 @@ export default function InputRange({ passwordLength, setPasswordLength, min, max
 
    return (<>
       <div className="big input dark">
+         <span className="input-minmax">{min}</span>
          <label htmlFor="pw-length" className="sr-only">Passwortlänge</label>
          <input type="range"
             className="slider"
@@ -16,6 +17,7 @@ export default function InputRange({ passwordLength, setPasswordLength, min, max
             }
             value={passwordLength}
          />
+         <span className="input-minmax">{max}</span>
       </div>
    </>)
 }
